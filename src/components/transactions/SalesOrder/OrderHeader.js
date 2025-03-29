@@ -19,23 +19,25 @@ function OrderHeader({ orderHeader, setOrderHeader }) {
   };
 
   return (
-    <Row className="mb-3">
-      {/* Order Number */}
+    <Row className="mb-3" style={{ fontSize: "0.85rem" }}>
       <Row>
+        {/* Order Number Input */}
         <Col md={3}>
           <label>Order Number</label>
           <input
+            style={{ fontSize: "0.85rem" }}
             type="text"
             className="form-control"
             value={orderHeader.orderNumber}
+            readOnly
             onChange={(e) =>
               setOrderHeader({ ...orderHeader, orderNumber: e.target.value })
             }
-            placeholder="Enter Order Number"
+            // placeholder="Enter Order Number"
           />
         </Col>
 
-        {/* Customer Dropdown with Search */}
+        {/* Customer Dropdown */}
         <Col md={3}>
           <label>Customer</label>
           <Select
@@ -52,10 +54,20 @@ function OrderHeader({ orderHeader, setOrderHeader }) {
                 : null
             }
             onChange={handleCustomerChange}
-            isClearable
             placeholder="Select Customer..."
-            menuPortalTarget={document.body} // ✅ Renders dropdown outside to avoid overlap
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }} // ✅ Ensures dropdown stays on top
+            menuPortalTarget={document.body}
+            isClearable={false} // 🔹 Hides the cross icon (clear option)
+            components={{
+              DropdownIndicator: () => null,
+              IndicatorSeparator: () => null,
+            }} // 🔹 Hides the arrow & separator
+            styles={{
+              menuPortal: (base) => ({
+                ...base,
+                zIndex: 9999,
+                fontSize: "0.85rem",
+              }),
+            }}
           />
         </Col>
 
@@ -63,6 +75,7 @@ function OrderHeader({ orderHeader, setOrderHeader }) {
         <Col md={3}>
           <label>Sales Person</label>
           <input
+            style={{ fontSize: "0.85rem" }}
             type="text"
             className="form-control"
             value={orderHeader.salesPerson}
@@ -74,11 +87,13 @@ function OrderHeader({ orderHeader, setOrderHeader }) {
           />
         </Col>
       </Row>
+
       <Row>
         {/* Order Date */}
         <Col md={3}>
           <label>Order Date</label>
           <input
+            style={{ fontSize: "0.85rem" }}
             type="date"
             className="form-control"
             value={orderHeader.orderDate}
@@ -92,6 +107,7 @@ function OrderHeader({ orderHeader, setOrderHeader }) {
         <Col md={6}>
           <label>Shipping Address</label>
           <input
+            style={{ fontSize: "0.85rem" }}
             type="text"
             className="form-control"
             value={orderHeader.shippingAddress}

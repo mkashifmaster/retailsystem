@@ -103,7 +103,7 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
         >
           <tr>
             <th style={{ width: "40px" }}>#</th>
-            <th style={{ width: "200px" }}>Item Code</th>
+            <th style={{ width: "200px" }}>Item</th>
             <th style={{ width: "80px" }} className="text-end">
               Quantity
             </th>
@@ -111,13 +111,13 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
               Rate
             </th>
             <th style={{ width: "80px" }} className="text-end">
-              Discount %
+              Disc.%
             </th>
             <th style={{ width: "100px" }} className="text-end">
-              Discount Amount
+              Disc. Amt
             </th>
             <th style={{ width: "100px" }} className="text-end">
-              Net Amount
+              Net Amt
             </th>
             <th style={{ width: "50px" }}></th>
           </tr>
@@ -125,6 +125,7 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
 
         {/* Scrollable Body */}
         <tbody>
+          .
           {orderDetails.map((item, index) => {
             const amount = item.quantity * item.rate;
             const discountAmount = amount * (item.discount / 100);
@@ -136,15 +137,21 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
                 <td>
                   <Select
                     options={items}
-                    getOptionLabel={(e) => `${e.itemcode} - ${e.itemname}`}  // Display only itemcode
+                    getOptionLabel={(e) => `${e.itemcode} - ${e.itemname}`} // Display only itemcode
                     getOptionValue={(e) => e.itemcode}
                     value={
                       items.find(
                         (opt) => opt.itemcode === orderDetails[index]?.itemcode
                       ) || null
                     } // Ensure selection
+                    placeholder="Select Item..."
                     onChange={(selected) => handleItemChange(index, selected)}
                     menuPortalTarget={document.body}
+                    isClearable={false} // 🔹 Hides the cross icon (clear option)
+                    components={{
+                      DropdownIndicator: () => null,
+                      IndicatorSeparator: () => null,
+                    }} // 🔹 Hides the arrow & separator
                     styles={{
                       control: (base) => ({
                         ...base,

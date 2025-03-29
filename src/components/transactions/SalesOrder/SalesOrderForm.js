@@ -3,13 +3,16 @@ import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import OrderHeader from "./OrderHeader";
 import OrderDetails from "./OrderDetails";
-import { fetchOrders, saveOrder } from "../../../services/orderService"; // API Service
+import { fetchOrders, saveOrder } from "../../../services/orderService";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function SalesOrderForm() {
+  const today = new Date().toISOString().split("T")[0];
+
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isNewOrder, setIsNewOrder] = useState(false);
   const [orderHeader, setOrderHeader] = useState({
     orderNumber: "",
     orderDate: "",
@@ -27,11 +30,11 @@ function SalesOrderForm() {
 
   const handleOrderSelect = (selectedOption) => {
     setSelectedOrder(selectedOption);
-  
+    setIsNewOrder(false);
+
     if (selectedOption) {
       const order = orders.find((o) => o.orderno === selectedOption.value);
       if (order) {
-        // Populate Header
         setOrderHeader({
           orderNumber: order.orderno,
           orderDate: order.orderdate,
@@ -40,11 +43,10 @@ function SalesOrderForm() {
           salesPerson: order.SalesPerson,
           shippingAddress: order.ShippingAdress,
         });
-  
-        // Populate Details
+
         setOrderDetails(
           order.items.map((item) => ({
-            itemcode: item.itemcode, // Ensure this exists in order API
+            itemcode: item.itemcode,
             quantity: item.quantity,
             rate: item.rate,
             discount: item.discount,
@@ -55,12 +57,17 @@ function SalesOrderForm() {
       resetForm();
     }
   };
-  
+
+  const handleNewOrder = () => {
+    setIsNewOrder(true);
+    resetForm();
+  };
+
   const resetForm = () => {
     setSelectedOrder(null);
     setOrderHeader({
       orderNumber: "",
-      orderDate: "",
+      orderDate: today,
       customerCode: "",
       customerName: "",
       salesPerson: "Salman",
@@ -85,7 +92,8 @@ function SalesOrderForm() {
     if (result.success) {
       alert("Order saved successfully!");
       fetchOrders().then((data) => setOrders(data)); // Reload orders
-      resetForm();
+      setIsNewOrder(false);
+      //resetForm();
     } else {
       alert("Failed to save order.");
     }
@@ -93,35 +101,46 @@ function SalesOrderForm() {
 
   return (
     <Container fluid className="vh-100 d-flex flex-column align-items-center">
-      <Card className="shadow-lg flex-grow-1 d-flex flex-column w-80">
+      <Card
+        className="shadow-lg flex-grow-1 d-flex flex-column w-100"
+        style={{ maxWidth: "100%", margin: "auto" }}
+      >
         <Card.Header className="bg-primary text-white text-center">
           <h4>Sales Order</h4>
         </Card.Header>
         <Card.Body className="d-flex flex-column flex-grow-1">
-          <div className="w-80 mx-auto">
-            {/* Order Number Dropdown */}
-            <Row className="mb-3">
-              <Col md={6}>
-                <label>Select Order</label>
-                <Select
-                  options={orders.map((order) => ({
-                    value: order.orderno,
-                    label: `${order.orderno} - ${order.CustomerName}`,
-                  }))}
-                  value={selectedOrder}
-                  onChange={handleOrderSelect}
-                  isClearable
-                  placeholder="Select Order..."
-                  menuPortalTarget={document.body}
-                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-                />
-              </Col>
-              <Col md={6} className="text-end">
-                <Button variant="success" onClick={resetForm}>
-                  + New Order
-                </Button>
-              </Col>
-            </Row>
+          <div className="w-80 mx-auto" style={{ fontSize: "0.85rem" }}>
+            {/* Select Order Dropdown */}
+            {!isNewOrder && (
+              <Row className="mb-3">
+                <Col md={6}>
+                  <label>Select Order</label>
+                  <Select
+                    options={orders.map((order) => ({
+                      value: order.orderno,
+                      label: `${order.orderno} - ${order.CustomerName}`,
+                    }))}
+                    value={selectedOrder}
+                    onChange={handleOrderSelect}
+                    placeholder="Select Order..."
+                    menuPortalTarget={document.body}
+                    isClearable={false} // 🔹 Hides the cross icon (clear option)
+                    components={{
+                      DropdownIndicator: () => null,
+                      IndicatorSeparator: () => null,
+                    }} // 🔹 Hides the arrow & separator
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                    }}
+                  />
+                </Col>
+                <Col md={6} className="text-end">
+                  <Button variant="success" onClick={handleNewOrder}>
+                    + New Order
+                  </Button>
+                </Col>
+              </Row>
+            )}
 
             {/* Order Header Section */}
             <OrderHeader
@@ -146,7 +165,11 @@ function SalesOrderForm() {
               </Button>
             </Col>
             <Col className="text-end">
-              <Button variant="primary" onClick={handleSave}>
+              <Button
+                variant="primary"
+                onClick={handleSave}
+                style={{ width: "130px" }}
+              >
                 Save Order
               </Button>
             </Col>
