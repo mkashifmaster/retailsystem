@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import { fetchCustomers } from "../../../services/customerService";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateOrderHeaderField,
+  setOrderHeader,
+} from "../../../redux/orderSlice";
 
-function OrderHeader({ orderHeader, setOrderHeader }) {
+function OrderHeader() {
+  const dispatch = useDispatch();
+  const { orderHeader } = useSelector((state) => state.order);
   const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
@@ -11,33 +18,36 @@ function OrderHeader({ orderHeader, setOrderHeader }) {
   }, []);
 
   const handleCustomerChange = (selectedOption) => {
-    setOrderHeader({
-      ...orderHeader,
-      customerCode: selectedOption?.value || "",
-      customerName: selectedOption?.label || "",
-    });
+    dispatch(
+      setOrderHeader({
+        ...orderHeader,
+        customerCode: selectedOption?.value || "",
+        customerName: selectedOption?.label || "",
+      })
+    );
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(updateOrderHeaderField({ field: name, value }));
   };
 
   return (
     <Row className="mb-3" style={{ fontSize: "0.85rem" }}>
       <Row>
-        {/* Order Number Input */}
         <Col md={3}>
           <label>Order Number</label>
           <input
             style={{ fontSize: "0.85rem" }}
             type="text"
             className="form-control"
+            name="orderNumber"
             value={orderHeader.orderNumber}
             readOnly
-            onChange={(e) =>
-              setOrderHeader({ ...orderHeader, orderNumber: e.target.value })
-            }
-            // placeholder="Enter Order Number"
+            onChange={handleInputChange}
           />
         </Col>
 
-        {/* Customer Dropdown */}
         <Col md={3}>
           <label>Customer</label>
           <Select
@@ -56,11 +66,11 @@ function OrderHeader({ orderHeader, setOrderHeader }) {
             onChange={handleCustomerChange}
             placeholder="Select Customer..."
             menuPortalTarget={document.body}
-            isClearable={false} // 🔹 Hides the cross icon (clear option)
+            isClearable={false}
             components={{
               DropdownIndicator: () => null,
               IndicatorSeparator: () => null,
-            }} // 🔹 Hides the arrow & separator
+            }}
             styles={{
               menuPortal: (base) => ({
                 ...base,
@@ -71,17 +81,15 @@ function OrderHeader({ orderHeader, setOrderHeader }) {
           />
         </Col>
 
-        {/* Sales Person */}
         <Col md={3}>
           <label>Sales Person</label>
           <input
             style={{ fontSize: "0.85rem" }}
             type="text"
             className="form-control"
+            name="salesPerson"
             value={orderHeader.salesPerson}
-            onChange={(e) =>
-              setOrderHeader({ ...orderHeader, salesPerson: e.target.value })
-            }
+            onChange={handleInputChange}
             placeholder="Enter Sales Person"
             readOnly
           />
@@ -89,34 +97,27 @@ function OrderHeader({ orderHeader, setOrderHeader }) {
       </Row>
 
       <Row>
-        {/* Order Date */}
         <Col md={3}>
           <label>Order Date</label>
           <input
             style={{ fontSize: "0.85rem" }}
             type="date"
             className="form-control"
+            name="orderDate"
             value={orderHeader.orderDate}
-            onChange={(e) =>
-              setOrderHeader({ ...orderHeader, orderDate: e.target.value })
-            }
+            onChange={handleInputChange}
           />
         </Col>
 
-        {/* Shipping Address */}
         <Col md={6}>
           <label>Shipping Address</label>
           <input
             style={{ fontSize: "0.85rem" }}
             type="text"
             className="form-control"
+            name="shippingAddress"
             value={orderHeader.shippingAddress}
-            onChange={(e) =>
-              setOrderHeader({
-                ...orderHeader,
-                shippingAddress: e.target.value,
-              })
-            }
+            onChange={handleInputChange}
             placeholder="Enter Shipping Address"
           />
         </Col>

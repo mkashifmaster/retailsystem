@@ -1,79 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import OrderHeader from "./OrderHeader";
-//import OrderDetails from "./OrderDetails";
 import { fetchOrders, saveOrder } from "../../../services/orderService";
-
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setOrders,
+  setSelectedOrder,
+  setIsNewOrder,
+  setOrderHeader,
+  resetOrderForm,
+} from "../../../redux/orderSlice";
 
 function SalesOrderForm() {
-  const today = new Date().toISOString().split("T")[0];
-
-  const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [isNewOrder, setIsNewOrder] = useState(false);
-  const [orderHeader, setOrderHeader] = useState({
-    orderNumber: "",
-    orderDate: "",
-    customerCode: "",
-    customerName: "",
-    salesPerson: "Salman",
-    shippingAddress: "",
-  });
-
-  //const [orderDetails, setOrderDetails] = useState([]);
+  const dispatch = useDispatch();
+  const { orders, selectedOrder, isNewOrder, orderHeader } = useSelector(
+    (state) => state.order
+  );
 
   useEffect(() => {
-    fetchOrders().then((data) => setOrders(data)); // Load orders from API
-  }, []);
+    fetchOrders().then((data) => dispatch(setOrders(data)));
+  }, [dispatch]);
 
   const handleOrderSelect = (selectedOption) => {
-    setSelectedOrder(selectedOption);
-    setIsNewOrder(false);
+    dispatch(setSelectedOrder(selectedOption));
+    dispatch(setIsNewOrder(false));
 
     if (selectedOption) {
       const order = orders.find((o) => o.orderno === selectedOption.value);
       if (order) {
-        setOrderHeader({
-          orderNumber: order.orderno,
-          orderDate: order.orderdate,
-          customerCode: order.CustomerCode,
-          customerName: order.CustomerName,
-          salesPerson: order.SalesPerson,
-          shippingAddress: order.ShippingAdress,
-        });
-
-        // setOrderDetails(
-        //   order.items.map((item) => ({
-        //     itemcode: item.itemcode,
-        //     quantity: item.quantity,
-        //     rate: item.rate,
-        //     discount: item.discount,
-        //   }))
-        // );
+        dispatch(
+          setOrderHeader({
+            orderNumber: order.orderno,
+            orderDate: order.orderdate,
+            customerCode: order.CustomerCode,
+            customerName: order.CustomerName,
+            salesPerson: order.SalesPerson,
+            shippingAddress: order.ShippingAdress,
+          })
+        );
       }
     } else {
-      resetForm();
+      dispatch(resetOrderForm());
     }
   };
 
   const handleNewOrder = () => {
-    setIsNewOrder(true);
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setSelectedOrder(null);
-    setOrderHeader({
-      orderNumber: "",
-      orderDate: today,
-      customerCode: "",
-      customerName: "",
-      salesPerson: "Salman",
-      shippingAddress: "",
-    });
-    // setOrderDetails([]);
+    dispatch(setIsNewOrder(true));
+    dispatch(resetOrderForm());
   };
 
   const handleSave = async () => {
@@ -84,16 +59,14 @@ function SalesOrderForm() {
       customerName: orderHeader.customerName,
       salesPerson: orderHeader.salesPerson,
       shippingAddress: orderHeader.shippingAddress,
-      //items: orderDetails,
     };
 
     const result = await saveOrder(newOrder);
 
     if (result.success) {
       alert("Order saved successfully!");
-      fetchOrders().then((data) => setOrders(data)); // Reload orders
-      setIsNewOrder(false);
-      //resetForm();
+      fetchOrders().then((data) => dispatch(setOrders(data)));
+      dispatch(setIsNewOrder(false));
     } else {
       alert("Failed to save order.");
     }
@@ -110,7 +83,6 @@ function SalesOrderForm() {
         </Card.Header>
         <Card.Body className="d-flex flex-column flex-grow-1">
           <div className="w-80 mx-auto" style={{ fontSize: "0.85rem" }}>
-            {/* Select Order Dropdown */}
             {!isNewOrder && (
               <Row className="mb-3">
                 <Col md={6}>
@@ -124,11 +96,11 @@ function SalesOrderForm() {
                     onChange={handleOrderSelect}
                     placeholder="Select Order..."
                     menuPortalTarget={document.body}
-                    isClearable={false} // 🔹 Hides the cross icon (clear option)
+                    isClearable={false}
                     components={{
                       DropdownIndicator: () => null,
                       IndicatorSeparator: () => null,
-                    }} // 🔹 Hides the arrow & separator
+                    }}
                     styles={{
                       menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                     }}
@@ -142,25 +114,15 @@ function SalesOrderForm() {
               </Row>
             )}
 
-            {/* Order Header Section */}
-            <OrderHeader
-              orderHeader={orderHeader}
-              setOrderHeader={setOrderHeader}
-            />
-
-            {/* Order Details Section */}
-            {/* <div className="flex-grow-1 overflow-auto">
-              <OrderDetails
-                orderDetails={orderDetails}
-                setOrderDetails={setOrderDetails}
-              />
-            </div> */}
+            <OrderHeader />
           </div>
 
-          {/* Buttons */}
           <Row className="mt-3 w-80 mx-auto">
             <Col className="text-start">
-              <Button variant="secondary" onClick={resetForm}>
+              <Button
+                variant="secondary"
+                onClick={() => dispatch(resetOrderForm())}
+              >
                 Reset
               </Button>
             </Col>
