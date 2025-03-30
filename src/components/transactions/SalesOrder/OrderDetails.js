@@ -125,7 +125,6 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
 
         {/* Scrollable Body */}
         <tbody>
-          .
           {orderDetails.map((item, index) => {
             const amount = item.quantity * item.rate;
             const discountAmount = amount * (item.discount / 100);
