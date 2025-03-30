@@ -1,0 +1,371 @@
+[
+  {
+    "orderno": "ORD-81270214-347",
+    "orderdate": "2024-11-30",
+    "CustomerCode": "CUST1",
+    "CustomerName": "TAHA SIDDIQUI",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "MEHMOODABAD",
+    "items": [
+      {
+        "itemcode": "ITM-001",
+        "itemname": "Laptop",
+        "quantity": 18,
+        "rate": 202,
+        "discount": 15,
+        "discountamount": 545,
+        "netamount": 3091
+      },
+      {
+        "itemcode": "ITM-002",
+        "itemname": "Mouse",
+        "quantity": 17,
+        "rate": 441,
+        "discount": 13,
+        "discountamount": 974,
+        "netamount": 6523
+      },
+      {
+        "itemcode": "ITM-003",
+        "itemname": "Keyboard",
+        "quantity": 14,
+        "rate": 188,
+        "discount": 10,
+        "discountamount": 263,
+        "netamount": 2369
+      },
+      {
+        "itemcode": "ITM-004",
+        "itemname": "Monitor",
+        "quantity": 5,
+        "rate": 197,
+        "discount": 12,
+        "discountamount": 118,
+        "netamount": 867
+      }
+    ]
+  },
+  {
+    "orderno": "ORD-39143791-821",
+    "orderdate": "2024-10-22",
+    "CustomerCode": "CUST6",
+    "CustomerName": "ZEESHAN ALI",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "KARAHCI.",
+    "items": [
+      {
+        "itemcode": "ITM-001",
+        "itemname": "Laptop",
+        "quantity": 17,
+        "rate": 163,
+        "discount": 15,
+        "discountamount": 415,
+        "netamount": 2356
+      },
+      {
+        "itemcode": "ITM-002",
+        "itemname": "Mouse",
+        "quantity": 17,
+        "rate": 240,
+        "discount": 10,
+        "discountamount": 408,
+        "netamount": 3672
+      },
+      {
+        "itemcode": "ITM-003",
+        "itemname": "Keyboard",
+        "quantity": 20,
+        "rate": 414,
+        "discount": 15,
+        "discountamount": 1242,
+        "netamount": 7038
+      }
+    ]
+  },
+  {
+    "orderno": "ORD-64195602-171",
+    "orderdate": "2024-05-21",
+    "CustomerCode": "CUST9",
+    "CustomerName": "MUHAMMAD KAMRAN",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "H.NO.27/17 III-D NAZIMABAD",
+    "items": [
+      {
+        "itemcode": "ITM-001",
+        "itemname": "Laptop",
+        "quantity": 12,
+        "rate": 483,
+        "discount": 10,
+        "discountamount": 579,
+        "netamount": 5217
+      },
+      {
+        "itemcode": "ITM-002",
+        "itemname": "Mouse",
+        "quantity": 2,
+        "rate": 405,
+        "discount": 13,
+        "discountamount": 105,
+        "netamount": 705
+      },
+      {
+        "itemcode": "ITM-003",
+        "itemname": "Keyboard",
+        "quantity": 12,
+        "rate": 350,
+        "discount": 11,
+        "discountamount": 462,
+        "netamount": 3738
+      },
+      {
+        "itemcode": "ITM-004",
+        "itemname": "Monitor",
+        "quantity": 5,
+        "rate": 402,
+        "discount": 11,
+        "discountamount": 221,
+        "netamount": 1789
+      }
+    ]
+  },
+  {
+    "orderno": "ORD-57041183-894",
+    "orderdate": "2025-03-14",
+    "CustomerCode": "CUST10",
+    "CustomerName": "SHAHID AHMED",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "KARACHI.",
+    "items": [
+      {
+        "itemcode": "ITM-001",
+        "itemname": "Laptop",
+        "quantity": 6,
+        "rate": 283,
+        "discount": 14,
+        "discountamount": 237,
+        "netamount": 1461
+      },
+      {
+        "itemcode": "ITM-002",
+        "itemname": "Mouse",
+        "quantity": 16,
+        "rate": 168,
+        "discount": 11,
+        "discountamount": 295,
+        "netamount": 2393
+      }
+    ]
+  },
+  {
+    "orderno": "ORD-28397974-251",
+    "orderdate": "2025-03-14",
+    "CustomerCode": "CUST9",
+    "CustomerName": "MUHAMMAD YASIR",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "MEHMOODABAD",
+    "items": []
+  },
+  {
+    "orderno": "ORD-83035097-755",
+    "orderdate": "2025-02-10",
+    "CustomerCode": "CUST5",
+    "CustomerName": "ZEESHAN ALI",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "H.NO.345 BHATIABAD NEAR AIRPORT",
+    "items": [
+      {
+        "itemcode": "ITM-001",
+        "itemname": "Laptop",
+        "quantity": 14,
+        "rate": 59,
+        "discount": 10,
+        "discountamount": 82,
+        "netamount": 744
+      },
+      {
+        "itemcode": "ITM-002",
+        "itemname": "Mouse",
+        "quantity": 14,
+        "rate": 290,
+        "discount": 12,
+        "discountamount": 487,
+        "netamount": 3573
+      },
+      {
+        "itemcode": "ITM-003",
+        "itemname": "Keyboard",
+        "quantity": 5,
+        "rate": 387,
+        "discount": 12,
+        "discountamount": 232,
+        "netamount": 1703
+      },
+      {
+        "itemcode": "ITM-004",
+        "itemname": "Monitor",
+        "quantity": 12,
+        "rate": 445,
+        "discount": 13,
+        "discountamount": 694,
+        "netamount": 4646
+      }
+    ]
+  },
+  {
+    "orderno": "ORD-01283689-421",
+    "orderdate": "2024-09-03",
+    "CustomerCode": "CUST10",
+    "CustomerName": "MUHAMMAD KHURRAM",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "LANDHI-6",
+    "items": [
+      {
+        "itemcode": "ITM-001",
+        "itemname": "Laptop",
+        "quantity": 16,
+        "rate": 98,
+        "discount": 14,
+        "discountamount": 219,
+        "netamount": 1349
+      },
+      {
+        "itemcode": "ITM-002",
+        "itemname": "Mouse",
+        "quantity": 9,
+        "rate": 367,
+        "discount": 12,
+        "discountamount": 396,
+        "netamount": 2907
+      }
+    ]
+  },
+  {
+    "orderno": "ORD-55778428-781",
+    "orderdate": "2024-10-20",
+    "CustomerCode": "CUST9",
+    "CustomerName": "ZEESHAN ALI",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "KARAHCI.",
+    "items": [
+      {
+        "itemcode": "ITM-001",
+        "itemname": "Laptop",
+        "quantity": 17,
+        "rate": 341,
+        "discount": 14,
+        "discountamount": 811,
+        "netamount": 4986
+      },
+      {
+        "itemcode": "ITM-002",
+        "itemname": "Mouse",
+        "quantity": 2,
+        "rate": 271,
+        "discount": 14,
+        "discountamount": 75,
+        "netamount": 467
+      },
+      {
+        "itemcode": "ITM-003",
+        "itemname": "Keyboard",
+        "quantity": 12,
+        "rate": 446,
+        "discount": 11,
+        "discountamount": 588,
+        "netamount": 4764
+      },
+      {
+        "itemcode": "ITM-004",
+        "itemname": "Monitor",
+        "quantity": 20,
+        "rate": 349,
+        "discount": 15,
+        "discountamount": 1047,
+        "netamount": 5933
+      },
+      {
+        "itemcode": "ITM-005",
+        "itemname": "Printer",
+        "quantity": 14,
+        "rate": 466,
+        "discount": 10,
+        "discountamount": 652,
+        "netamount": 5872
+      }
+    ]
+  },
+  {
+    "orderno": "ORD-06229497-591",
+    "orderdate": "2024-12-04",
+    "CustomerCode": "CUST9",
+    "CustomerName": "AHSAN AHMED",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "AREA 3-A",
+    "items": [
+      {
+        "itemcode": "ITM-001",
+        "itemname": "Laptop",
+        "quantity": 4,
+        "rate": 249,
+        "discount": 12,
+        "discountamount": 119,
+        "netamount": 877
+      }
+    ]
+  },
+  {
+    "orderno": "ORD-50908339-950",
+    "orderdate": "2024-12-27",
+    "CustomerCode": "CUST10",
+    "CustomerName": "TAUSEEF AHMED",
+    "SalesPerson": "SALMAN",
+    "ShippingAdress": "NO.175/2 LIAQUAT AHSRAF COLONY",
+    "items": [
+      {
+        "itemcode": "ITM-001",
+        "itemname": "Laptop",
+        "quantity": 16,
+        "rate": 123,
+        "discount": 12,
+        "discountamount": 236,
+        "netamount": 1732
+      },
+      {
+        "itemcode": "ITM-002",
+        "itemname": "Mouse",
+        "quantity": 7,
+        "rate": 105,
+        "discount": 10,
+        "discountamount": 73,
+        "netamount": 662
+      },
+      {
+        "itemcode": "ITM-003",
+        "itemname": "Keyboard",
+        "quantity": 20,
+        "rate": 241,
+        "discount": 15,
+        "discountamount": 723,
+        "netamount": 4097
+      },
+      {
+        "itemcode": "ITM-004",
+        "itemname": "Monitor",
+        "quantity": 19,
+        "rate": 331,
+        "discount": 13,
+        "discountamount": 817,
+        "netamount": 5472
+      },
+      {
+        "itemcode": "ITM-005",
+        "itemname": "Printer",
+        "quantity": 20,
+        "rate": 410,
+        "discount": 10,
+        "discountamount": 820,
+        "netamount": 7380
+      }
+    ]
+  }
+]
