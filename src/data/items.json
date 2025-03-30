@@ -1,0 +1,52 @@
+[
+  {
+    "itemcode": "ITM-001",
+    "itemname": "Laptop",
+    "rate": 221.83
+  },
+  {
+    "itemcode": "ITM-002",
+    "itemname": "Mouse",
+    "rate": 499.47
+  },
+  {
+    "itemcode": "ITM-003",
+    "itemname": "Keyboard",
+    "rate": 423.89
+  },
+  {
+    "itemcode": "ITM-004",
+    "itemname": "Monitor",
+    "rate": 51.98
+  },
+  {
+    "itemcode": "ITM-005",
+    "itemname": "Printer",
+    "rate": 66.37
+  },
+  {
+    "itemcode": "ITM-006",
+    "itemname": "External Hard Drive",
+    "rate": 535.02
+  },
+  {
+    "itemcode": "ITM-007",
+    "itemname": "Wireless Router",
+    "rate": 464.35
+  },
+  {
+    "itemcode": "ITM-008",
+    "itemname": "Webcam",
+    "rate": 507.57
+  },
+  {
+    "itemcode": "ITM-009",
+    "itemname": "Headphones",
+    "rate": 535.59
+  },
+  {
+    "itemcode": "ITM-010",
+    "itemname": "Smartphone",
+    "rate": 265.38
+  }
+]
