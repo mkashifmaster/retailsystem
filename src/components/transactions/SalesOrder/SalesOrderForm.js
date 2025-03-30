@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import Select from "react-select";
-import OrderHeader from "./OrderHeader";
-import OrderDetails from "./OrderDetails";
+import OrderHeader from "./OrderHeader"; 
 import { fetchOrders, saveOrder } from "../../../services/orderService";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function SalesOrderForm() {
@@ -21,8 +19,7 @@ function SalesOrderForm() {
     salesPerson: "Salman",
     shippingAddress: "",
   });
-
-  const [orderDetails, setOrderDetails] = useState([]);
+ 
 
   useEffect(() => {
     fetchOrders().then((data) => setOrders(data)); // Load orders from API
@@ -42,16 +39,7 @@ function SalesOrderForm() {
           customerName: order.CustomerName,
           salesPerson: order.SalesPerson,
           shippingAddress: order.ShippingAdress,
-        });
-
-        setOrderDetails(
-          order.items.map((item) => ({
-            itemcode: item.itemcode,
-            quantity: item.quantity,
-            rate: item.rate,
-            discount: item.discount,
-          }))
-        );
+        });        
       }
     } else {
       resetForm();
@@ -72,8 +60,7 @@ function SalesOrderForm() {
       customerName: "",
       salesPerson: "Salman",
       shippingAddress: "",
-    });
-    setOrderDetails([]);
+    }); 
   };
 
   const handleSave = async () => {
@@ -84,7 +71,7 @@ function SalesOrderForm() {
       customerName: orderHeader.customerName,
       salesPerson: orderHeader.salesPerson,
       shippingAddress: orderHeader.shippingAddress,
-      items: orderDetails,
+      
     };
 
     const result = await saveOrder(newOrder);
@@ -148,13 +135,7 @@ function SalesOrderForm() {
               setOrderHeader={setOrderHeader}
             />
 
-            {/* Order Details Section */}
-            <div className="flex-grow-1 overflow-auto">
-              <OrderDetails
-                orderDetails={orderDetails}
-                setOrderDetails={setOrderDetails}
-              />
-            </div>
+           
           </div>
 
           {/* Buttons */}
