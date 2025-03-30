@@ -1,76 +1,77 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
 import Select from "react-select";
+import { useSelector, useDispatch } from "react-redux";
 import { fetchItems } from "../../../services/itemService";
-import { formatNumber } from "../../../utils/formatNumber"; // Utility for formatting numbers
+import { formatNumber } from "../../../utils/formatNumber";
 
-function OrderDetails({ orderDetails, setOrderDetails }) {
-  const [items, setItems] = useState([]); // State for items list
+import {
+  setOrderDetails,
+  updateOrderDetail,
+  deleteOrderDetail,
+  addOrderDetail,
+  setItems,
+} from "../../../redux/orderSlice";
 
-  // Fetch items from API when the component loads
+function OrderDetails() {
+  const dispatch = useDispatch();
+  const orderDetails = useSelector((state) => state.order.orderDetails);
+  const items = useSelector((state) => state.order.items);
+
+  // Fetch items on component mount
   useEffect(() => {
     fetchItems().then((data) => {
-      console.log("Fetched Items:", data); // Debugging API Response
-      setItems(data);
+      dispatch(setItems(data)); // ✅ Correctly store items
     });
-  }, []);
+  }, [dispatch]);
 
-  // Initialize with 1 empty row on first load
+  // Initialize with an empty row if orderDetails is empty
   useEffect(() => {
     if (orderDetails.length === 0) {
-      setOrderDetails([{ itemcode: "", quantity: 1, rate: 0, discount: 10 }]);
+      dispatch(
+        addOrderDetail({ itemcode: "", quantity: 1, rate: 0, discount: 10 })
+      );
     }
-  }, [orderDetails.length, setOrderDetails]);
+  }, [orderDetails.length, dispatch]);
 
-  // Handle item selection change in dropdown
   const handleItemChange = (index, selectedItem) => {
-    const updatedDetails = [...orderDetails];
+    dispatch(
+      updateOrderDetail({
+        index,
+        field: "itemcode",
+        value: selectedItem.itemcode,
+      })
+    );
+    dispatch(
+      updateOrderDetail({ index, field: "rate", value: selectedItem.rate })
+    );
+    dispatch(updateOrderDetail({ index, field: "discount", value: 10 }));
 
-    // Update the selected row with the chosen item details
-    updatedDetails[index] = {
-      ...updatedDetails[index],
-      itemcode: selectedItem.itemcode,
-      rate: selectedItem.rate,
-      discount: 10, // Reset discount when item changes
-    };
-
-    // Check if the last row is filled; if so, add a new blank row
-    const lastRow = updatedDetails[updatedDetails.length - 1];
-    if (lastRow.itemcode) {
-      updatedDetails.push({
-        itemcode: "",
-        quantity: 1,
-        rate: 0,
-        discount: 0,
-      });
+    // Add a new empty row if the last row is filled
+    if (orderDetails[orderDetails.length - 1].itemcode) {
+      dispatch(
+        addOrderDetail({ itemcode: "", quantity: 1, rate: 0, discount: 0 })
+      );
     }
-
-    setOrderDetails(updatedDetails);
   };
 
-  // Handle input changes
   const handleInputChange = (index, field, value) => {
-    const updatedDetails = [...orderDetails];
-    updatedDetails[index][field] = value;
-    setOrderDetails(updatedDetails);
+    dispatch(updateOrderDetail({ index, field, value }));
   };
 
-  // Delete row
   const handleDeleteRow = (index) => {
-    const updatedDetails = orderDetails.filter((_, i) => i !== index);
-    setOrderDetails(updatedDetails);
+    dispatch(deleteOrderDetail(index));
   };
 
-  // Calculate totals
-  const totalQuantity = orderDetails.reduce(
+  const totalQuantity = (orderDetails || []).reduce(
     (sum, item) => sum + Number(item.quantity || 0),
     0
   );
-  const totalAmount = orderDetails.reduce(
+  const totalAmount = (orderDetails || []).reduce(
     (sum, item) => sum + Number(item.quantity || 0) * Number(item.rate || 0),
     0
   );
-  const totalDiscount = orderDetails.reduce(
+  const totalDiscount = (orderDetails || []).reduce(
     (sum, item) =>
       sum +
       Number(item.quantity || 0) *
@@ -96,36 +97,22 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
         className="mt-2"
         style={{ fontSize: "0.85rem" }}
       >
-        {/* Header - Fixed Position */}
         <thead
           className="table-secondary"
           style={{ position: "sticky", top: 0, zIndex: 2 }}
         >
           <tr>
-            <th style={{ width: "40px" }}>#</th>
-            <th style={{ width: "200px" }}>Item</th>
-            <th style={{ width: "80px" }} className="text-end">
-              Quantity
-            </th>
-            <th style={{ width: "80px" }} className="text-end">
-              Rate
-            </th>
-            <th style={{ width: "80px" }} className="text-end">
-              Disc.%
-            </th>
-            <th style={{ width: "100px" }} className="text-end">
-              Disc. Amt
-            </th>
-            <th style={{ width: "100px" }} className="text-end">
-              Net Amt
-            </th>
-            <th style={{ width: "50px" }}></th>
+            <th>#</th>
+            <th>Item</th>
+            <th className="text-end">Quantity</th>
+            <th className="text-end">Rate</th>
+            <th className="text-end">Disc.%</th>
+            <th className="text-end">Disc. Amt</th>
+            <th className="text-end">Net Amt</th>
+            <th></th>
           </tr>
         </thead>
-
-        {/* Scrollable Body */}
         <tbody>
-          .
           {orderDetails.map((item, index) => {
             const amount = item.quantity * item.rate;
             const discountAmount = amount * (item.discount / 100);
@@ -137,27 +124,25 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
                 <td>
                   <Select
                     options={items}
-                    getOptionLabel={(e) => `${e.itemcode} - ${e.itemname}`} // Display only itemcode
+                    getOptionLabel={(e) => `${e.itemcode} - ${e.itemname}`}
                     getOptionValue={(e) => e.itemcode}
                     value={
-                      items.find(
-                        (opt) => opt.itemcode === orderDetails[index]?.itemcode
-                      ) || null
-                    } // Ensure selection
+                      items.find((opt) => opt.itemcode === item.itemcode) ||
+                      null
+                    }
                     placeholder="Select Item..."
                     onChange={(selected) => handleItemChange(index, selected)}
                     menuPortalTarget={document.body}
-                    isClearable={false} // 🔹 Hides the cross icon (clear option)
+                    isClearable={false}
                     components={{
                       DropdownIndicator: () => null,
                       IndicatorSeparator: () => null,
-                    }} // 🔹 Hides the arrow & separator
+                    }}
                     styles={{
                       control: (base) => ({
                         ...base,
                         minHeight: "31px",
                         height: "31px",
-                        padding: "0px",
                         fontSize: "0.85rem",
                       }),
                       valueContainer: (base) => ({
@@ -169,40 +154,35 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
                         margin: "0px",
                         padding: "0px",
                       }),
-                      menuPortal: (base) => ({
-                        ...base,
-                        zIndex: 9999,
-                      }),
+                      menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                     }}
                   />
                 </td>
                 <td>
                   <input
                     type="number"
-                    className="form-control form-control-sm text-end border-0   "
+                    className="form-control form-control-sm text-end border-0"
                     value={item.quantity}
                     onChange={(e) =>
                       handleInputChange(index, "quantity", e.target.value)
                     }
                   />
                 </td>
-                <td className="text-end border-0"> {item.rate} </td>
+                <td className="text-end border-0">{item.rate}</td>
                 <td>
                   <input
                     type="number"
-                    className="form-control form-control-sm text-end border-0  "
+                    className="form-control form-control-sm text-end border-0"
                     value={item.discount}
                     onChange={(e) =>
                       handleInputChange(index, "discount", e.target.value)
                     }
                   />
                 </td>
-                <td className="text-end border-0  ">
+                <td className="text-end border-0">
                   {formatNumber(discountAmount)}
                 </td>
-                <td className="text-end border-0  ">
-                  {formatNumber(netAmount)}
-                </td>
+                <td className="text-end border-0">{formatNumber(netAmount)}</td>
                 <td className="text-center">
                   <Button
                     variant="danger"
@@ -216,8 +196,6 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
             );
           })}
         </tbody>
-
-        {/* Footer - Always Visible */}
         <tfoot className="table-secondary">
           <tr>
             <td colSpan="2" className="text-end">

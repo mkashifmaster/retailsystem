@@ -1,127 +1,97 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col } from "react-bootstrap";
-import Select from "react-select";
-import { fetchCustomers } from "../../../services/customerService";
+import React from "react";
+import { Form, Row, Col } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { setOrderHeader } from "../../../redux/orderSlice";
 
-function OrderHeader({ orderHeader, setOrderHeader }) {
-  const [customers, setCustomers] = useState([]);
+function OrderHeader() {
+  const orderHeader = useSelector((state) => state.order.orderHeader);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetchCustomers().then((data) => setCustomers(data));
-  }, []);
-
-  const handleCustomerChange = (selectedOption) => {
-    setOrderHeader({
-      ...orderHeader,
-      customerCode: selectedOption?.value || "",
-      customerName: selectedOption?.label || "",
-    });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(setOrderHeader({ ...orderHeader, [name]: value }));
   };
 
   return (
-    <Row className="mb-3" style={{ fontSize: "0.85rem" }}>
-      <Row>
-        {/* Order Number Input */}
-        <Col md={3}>
-          <label>Order Number</label>
-          <input
-            style={{ fontSize: "0.85rem" }}
-            type="text"
-            className="form-control"
-            value={orderHeader.orderNumber}
-            readOnly
-            onChange={(e) =>
-              setOrderHeader({ ...orderHeader, orderNumber: e.target.value })
-            }
-            // placeholder="Enter Order Number"
-          />
+    <Form className="mb-3">
+      <Row className="mb-2">
+        <Col md={4}>
+          <Form.Group controlId="orderNumber">
+            <Form.Label>Order Number</Form.Label>
+            <Form.Control
+              type="text"
+              name="orderNumber"
+              value={orderHeader.orderNumber}
+              onChange={handleChange}
+              disabled
+            />
+          </Form.Group>
         </Col>
-
-        {/* Customer Dropdown */}
-        <Col md={3}>
-          <label>Customer</label>
-          <Select
-            options={customers.map((customer) => ({
-              value: customer.customerCode,
-              label: `${customer.customerCode} - ${customer.customerName}`,
-            }))}
-            value={
-              orderHeader.customerCode
-                ? {
-                    value: orderHeader.customerCode,
-                    label: orderHeader.customerName,
-                  }
-                : null
-            }
-            onChange={handleCustomerChange}
-            placeholder="Select Customer..."
-            menuPortalTarget={document.body}
-            isClearable={false} // 🔹 Hides the cross icon (clear option)
-            components={{
-              DropdownIndicator: () => null,
-              IndicatorSeparator: () => null,
-            }} // 🔹 Hides the arrow & separator
-            styles={{
-              menuPortal: (base) => ({
-                ...base,
-                zIndex: 9999,
-                fontSize: "0.85rem",
-              }),
-            }}
-          />
+        <Col md={4}>
+          <Form.Group controlId="orderDate">
+            <Form.Label>Order Date</Form.Label>
+            <Form.Control
+              type="date"
+              name="orderDate"
+              value={orderHeader.orderDate}
+              onChange={handleChange}
+            />
+          </Form.Group>
         </Col>
-
-        {/* Sales Person */}
-        <Col md={3}>
-          <label>Sales Person</label>
-          <input
-            style={{ fontSize: "0.85rem" }}
-            type="text"
-            className="form-control"
-            value={orderHeader.salesPerson}
-            onChange={(e) =>
-              setOrderHeader({ ...orderHeader, salesPerson: e.target.value })
-            }
-            placeholder="Enter Sales Person"
-            readOnly
-          />
+        <Col md={4}>
+          <Form.Group controlId="salesPerson">
+            <Form.Label>Sales Person</Form.Label>
+            <Form.Control
+              type="text"
+              name="salesPerson"
+              value={orderHeader.salesPerson}
+              onChange={handleChange}
+              disabled
+            />
+          </Form.Group>
         </Col>
       </Row>
 
-      <Row>
-        {/* Order Date */}
-        <Col md={3}>
-          <label>Order Date</label>
-          <input
-            style={{ fontSize: "0.85rem" }}
-            type="date"
-            className="form-control"
-            value={orderHeader.orderDate}
-            onChange={(e) =>
-              setOrderHeader({ ...orderHeader, orderDate: e.target.value })
-            }
-          />
-        </Col>
-
-        {/* Shipping Address */}
+      <Row className="mb-2">
         <Col md={6}>
-          <label>Shipping Address</label>
-          <input
-            style={{ fontSize: "0.85rem" }}
-            type="text"
-            className="form-control"
-            value={orderHeader.shippingAddress}
-            onChange={(e) =>
-              setOrderHeader({
-                ...orderHeader,
-                shippingAddress: e.target.value,
-              })
-            }
-            placeholder="Enter Shipping Address"
-          />
+          <Form.Group controlId="customerCode">
+            <Form.Label>Customer Code</Form.Label>
+            <Form.Control
+              type="text"
+              name="customerCode"
+              value={orderHeader.customerCode}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group controlId="customerName">
+            <Form.Label>Customer Name</Form.Label>
+            <Form.Control
+              type="text"
+              name="customerName"
+              value={orderHeader.customerName}
+              onChange={handleChange}
+            />
+          </Form.Group>
         </Col>
       </Row>
-    </Row>
+
+      <Row>
+        <Col>
+          <Form.Group controlId="shippingAddress">
+            <Form.Label>Shipping Address</Form.Label>
+            <Form.Control
+              as="textarea"
+              name="shippingAddress"
+              value={orderHeader.shippingAddress}
+              onChange={handleChange}
+              rows={2}
+            />
+          </Form.Group>
+        </Col>
+      </Row>
+    </Form>
   );
 }
 
