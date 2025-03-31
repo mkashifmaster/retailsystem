@@ -61,8 +61,8 @@ function SalesOrderForm() {
   };
 
   const handleNewOrder = () => {
-    dispatch(setIsNewOrder(true));
     dispatch(resetOrderForm());
+    dispatch(setIsNewOrder(true));
   };
 
   const handleSave = async () => {
@@ -97,7 +97,7 @@ function SalesOrderForm() {
           <h4>Sales Order</h4>
         </Card.Header>
         <Card.Body className="d-flex flex-column flex-grow-1">
-          <div className="w-80 mx-auto" style={{ fontSize: "0.85rem" }}>
+          <div className="w-75 " style={{ fontSize: "0.85rem" }}>
             {!isNewOrder && (
               <Row className="mb-3">
                 <Col md={6}>
