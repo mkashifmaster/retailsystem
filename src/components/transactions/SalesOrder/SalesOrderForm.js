@@ -12,13 +12,14 @@ import {
   setIsNewOrder,
   setOrderHeader,
   resetOrderForm,
+  setOrderDetails,
 } from "../../../redux/orderSlice";
 
 function SalesOrderForm() {
-  const [orderDetails, setOrderDetails] = useState([]);
+  //const [orderDetails, setOrderDetails] = useState([]);
 
   const dispatch = useDispatch();
-  const { orders, selectedOrder, isNewOrder, orderHeader } = useSelector(
+  const { orders, selectedOrder, isNewOrder, orderHeader ,orderDetails} = useSelector(
     (state) => state.order
   );
 
@@ -42,6 +43,17 @@ function SalesOrderForm() {
             salesPerson: order.SalesPerson,
             shippingAddress: order.ShippingAdress,
           })
+        );
+
+        dispatch(
+          setOrderDetails(
+            order.items.map((item) => ({
+              itemcode: item.itemcode,
+              quantity: item.quantity,
+              rate: item.rate,
+              discount: item.discount,
+            }))
+          )
         );
       }
     } else {
@@ -121,10 +133,7 @@ function SalesOrderForm() {
             <OrderHeader />
             {/* Order Details Section */}
             <div className="flex-grow-1 overflow-auto">
-              <OrderDetails
-                orderDetails={orderDetails}
-                setOrderDetails={setOrderDetails}
-              />
+              <OrderDetails />
             </div>
           </div>
 

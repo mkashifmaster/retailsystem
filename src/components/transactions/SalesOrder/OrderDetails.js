@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import Select from "react-select";
+import { useSelector, useDispatch } from "react-redux";
 import { fetchItems } from "../../../services/itemService";
 import { formatNumber } from "../../../utils/formatNumber"; // Utility for formatting numbers
+import { setOrderDetails } from "../../../redux/orderSlice";
 
-function OrderDetails({ orderDetails, setOrderDetails }) {
+function OrderDetails() {
+  const dispatch = useDispatch();
+  const { orderDetails } = useSelector((state) => state.order);
   const [items, setItems] = useState([]); // State for items list
 
   // Fetch items from API when the component loads
@@ -18,9 +22,11 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
   // Initialize with 1 empty row on first load
   useEffect(() => {
     if (orderDetails.length === 0) {
-      setOrderDetails([{ itemcode: "", quantity: 1, rate: 0, discount: 10 }]);
+      dispatch(
+        setOrderDetails([{ itemcode: "", quantity: 1, rate: 0, discount: 10 }])
+      );
     }
-  }, [orderDetails.length, setOrderDetails]);
+  }, [orderDetails.length, dispatch(setOrderDetails)]);
 
   // Handle item selection change in dropdown
   const handleItemChange = (index, selectedItem) => {
@@ -45,20 +51,20 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
       });
     }
 
-    setOrderDetails(updatedDetails);
+    dispatch(setOrderDetails(updatedDetails));
   };
 
   // Handle input changes
   const handleInputChange = (index, field, value) => {
     const updatedDetails = [...orderDetails];
     updatedDetails[index][field] = value;
-    setOrderDetails(updatedDetails);
+   // dispatch(setOrderDetails(updatedDetails));
   };
 
   // Delete row
   const handleDeleteRow = (index) => {
     const updatedDetails = orderDetails.filter((_, i) => i !== index);
-    setOrderDetails(updatedDetails);
+    dispatch(setOrderDetails(updatedDetails));
   };
 
   // Calculate totals
@@ -136,7 +142,7 @@ function OrderDetails({ orderDetails, setOrderDetails }) {
                 <td>
                   <Select
                     options={items}
-                    getOptionLabel={(e) => `${e.itemcode} - ${e.itemname}`} // Display only itemcode
+                    getOptionLabel={(e) => `${e.itemcode} - ${e.itemname}`}
                     getOptionValue={(e) => e.itemcode}
                     value={
                       items.find(

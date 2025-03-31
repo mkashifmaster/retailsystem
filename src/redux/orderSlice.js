@@ -1,25 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { saveOrder, fetchOrders } from '../services/orderService';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { saveOrder, fetchOrders } from "../services/orderService";
 
 const today = new Date().toISOString().split("T")[0];
 
 // Async thunk for saving an order
 export const saveOrderAsync = createAsyncThunk(
-  'order/saveOrder',
+  "order/saveOrder",
   async (orderData, { dispatch }) => {
     const response = await saveOrder(orderData);
     if (response.success) {
       dispatch(fetchOrdersAsync()); // Refresh orders list after save
       return response.data;
     }
-    throw new Error('Failed to save order');
+    throw new Error("Failed to save order");
   }
 );
 
 // Async thunk for fetching orders
 export const fetchOrdersAsync = createAsyncThunk(
-  'order/fetchOrders',
+  "order/fetchOrders",
   async () => {
     const response = await fetchOrders();
     return response.data;
@@ -37,6 +37,7 @@ const initialState = {
     salesPerson: "Salman",
     shippingAddress: "",
   },
+  orderDetails: [],
 };
 
 const orderSlice = createSlice({
@@ -55,6 +56,9 @@ const orderSlice = createSlice({
     setOrderHeader: (state, action) => {
       state.orderHeader = action.payload;
     },
+    setOrderDetails: (state, action) => {
+      state.orderDetails = action.payload;
+    },
     updateOrderHeaderField: (state, action) => {
       const { field, value } = action.payload;
       state.orderHeader[field] = value;
@@ -62,6 +66,7 @@ const orderSlice = createSlice({
     resetOrderForm: (state) => {
       state.selectedOrder = null;
       state.isNewOrder = false;
+      state.orderDetails = [];
       state.orderHeader = {
         orderNumber: "",
         orderDate: today,
@@ -79,6 +84,7 @@ export const {
   setSelectedOrder,
   setIsNewOrder,
   setOrderHeader,
+  setOrderDetails,
   updateOrderHeaderField,
   resetOrderForm,
 } = orderSlice.actions;
