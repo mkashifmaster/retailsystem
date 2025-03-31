@@ -19,9 +19,8 @@ function SalesOrderForm() {
   //const [orderDetails, setOrderDetails] = useState([]);
 
   const dispatch = useDispatch();
-  const { orders, selectedOrder, isNewOrder, orderHeader ,orderDetails} = useSelector(
-    (state) => state.order
-  );
+  const { orders, selectedOrder, isNewOrder, orderHeader, orderDetails } =
+    useSelector((state) => state.order);
 
   useEffect(() => {
     fetchOrders().then((data) => dispatch(setOrders(data)));

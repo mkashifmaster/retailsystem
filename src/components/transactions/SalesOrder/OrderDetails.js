@@ -4,7 +4,7 @@ import Select from "react-select";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchItems } from "../../../services/itemService";
 import { formatNumber } from "../../../utils/formatNumber"; // Utility for formatting numbers
-import { setOrderDetails } from "../../../redux/orderSlice";
+import { setOrderDetails, updateOrderDetail } from "../../../redux/orderSlice";
 
 function OrderDetails() {
   const dispatch = useDispatch();
@@ -56,9 +56,11 @@ function OrderDetails() {
 
   // Handle input changes
   const handleInputChange = (index, field, value) => {
-    const updatedDetails = [...orderDetails];
-    updatedDetails[index][field] = value;
-   // dispatch(setOrderDetails(updatedDetails));
+    //const updatedDetails = [...orderDetails];
+    //updatedDetails[index][field] = value;
+    dispatch(updateOrderDetail({ index, field, value }));
+
+    //dispatch(setOrderDetails(updatedDetails));
   };
 
   // Delete row
