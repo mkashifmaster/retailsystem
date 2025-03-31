@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import Select from "react-select";
 import OrderHeader from "./OrderHeader";
+import OrderDetails from "./OrderDetails";
 import { fetchOrders, saveOrder } from "../../../services/orderService";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,6 +15,8 @@ import {
 } from "../../../redux/orderSlice";
 
 function SalesOrderForm() {
+  const [orderDetails, setOrderDetails] = useState([]);
+
   const dispatch = useDispatch();
   const { orders, selectedOrder, isNewOrder, orderHeader } = useSelector(
     (state) => state.order
@@ -59,6 +62,7 @@ function SalesOrderForm() {
       customerName: orderHeader.customerName,
       salesPerson: orderHeader.salesPerson,
       shippingAddress: orderHeader.shippingAddress,
+      items: orderDetails,
     };
 
     const result = await saveOrder(newOrder);
@@ -115,6 +119,13 @@ function SalesOrderForm() {
             )}
 
             <OrderHeader />
+            {/* Order Details Section */}
+            <div className="flex-grow-1 overflow-auto">
+              <OrderDetails
+                orderDetails={orderDetails}
+                setOrderDetails={setOrderDetails}
+              />
+            </div>
           </div>
 
           <Row className="mt-3 w-80 mx-auto">

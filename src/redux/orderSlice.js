@@ -1,7 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { saveOrder, fetchOrders } from '../services/orderService';
 
 const today = new Date().toISOString().split("T")[0];
 
+// Async thunk for saving an order
+export const saveOrderAsync = createAsyncThunk(
+  'order/saveOrder',
+  async (orderData, { dispatch }) => {
+    const response = await saveOrder(orderData);
+    if (response.success) {
+      dispatch(fetchOrdersAsync()); // Refresh orders list after save
+      return response.data;
+    }
+    throw new Error('Failed to save order');
+  }
+);
+
+// Async thunk for fetching orders
+export const fetchOrdersAsync = createAsyncThunk(
+  'order/fetchOrders',
+  async () => {
+    const response = await fetchOrders();
+    return response.data;
+  }
+);
 const initialState = {
   orders: [],
   selectedOrder: null,
