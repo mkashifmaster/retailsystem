@@ -135,9 +135,9 @@ function SalesOrderForm() {
               <OrderDetails />
             </div>
           </div>
-
-          <Row className="mt-3 w-80 mx-auto">
-            <Col className="text-start">
+          <div className="w-150 " >
+          <Row className="mt-3  ">
+            <Col className="text-end ">
               <Button
                 variant="secondary"
                 onClick={() => dispatch(resetOrderForm())}
@@ -145,7 +145,7 @@ function SalesOrderForm() {
                 Reset
               </Button>
             </Col>
-            <Col className="text-end">
+            <Col className="text-start">
               <Button
                 variant="primary"
                 onClick={handleSave}
@@ -155,6 +155,7 @@ function SalesOrderForm() {
               </Button>
             </Col>
           </Row>
+          </div>
         </Card.Body>
       </Card>
     </Container>
