@@ -14,7 +14,7 @@ export const fetchOrders = async () => {
 // Save order locally (simulating saving to database)
 export const saveOrder = async (order) => {
   try {
-    ordersData.push(order); // Simulating local storage or in-memory save
+    ordersData.push(order); // Simulating local storage or in memory save
     console.log("Order saved locally:", order);
 
     return { success: true };
