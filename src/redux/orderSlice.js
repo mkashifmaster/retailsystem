@@ -65,7 +65,7 @@ const orderSlice = createSlice({
     },
     updateOrderDetail: (state, action) => {
       const { index, field, value } = action.payload;
-      state.orderDetails[index][field] = value; // Immer handles immutability
+      state.orderDetails[index][field] = value; //
     },
     resetOrderForm: (state) => {
       state.selectedOrder = null;
